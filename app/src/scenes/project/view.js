@@ -1,10 +1,7 @@
 import { Chart as ChartJS, registerables } from "chart.js";
 import React, { useEffect, useState } from "react";
-import { IoIosAt, IoIosLink, IoIosStats, IoLogoGithub } from "react-icons/io";
-import { RiRoadMapLine } from "react-icons/ri";
-import { useSelector } from "react-redux";
+import { IoIosAt, IoIosLink } from "react-icons/io";
 import { useHistory, useParams } from "react-router-dom";
-
 import { getDaysInMonth } from "./utils";
 
 import Loader from "../../components/loader";
@@ -21,11 +18,13 @@ export default function ProjectView() {
   const { id } = useParams();
   const history = useHistory();
 
+  const getProject = async () => {
+    const { data: u } = await api.get(`/project/${id}`);
+    setProject(u);
+  };
+
   useEffect(() => {
-    (async () => {
-      const { data: u } = await api.get(`/project/${id}`);
-      setProject(u);
-    })();
+    getProject();
   }, []);
 
   useEffect(() => {
@@ -94,6 +93,7 @@ const ProjectDetails = ({ project }) => {
         </div>
       </div>
       <div className="flex flex-wrap p-3 gap-4"></div>
+
       <Activities project={project} />
     </div>
   );
@@ -261,6 +261,7 @@ const Field = ({ value = "-", ...rest }) => {
 };
 
 const Links = ({ project }) => {
+  console.log(project.links);
   return (
     <div className="flex flex-wrap gap-3">
       {project.website && (
@@ -274,7 +275,7 @@ const Links = ({ project }) => {
         </div>
       )}
       {project.links?.map((link) => (
-        <div className="group text-sm font-medium	text-blue-700 border-[1px] border-blue-700 rounded-full overflow-hidden">
+        <div key={link?._id} className="group text-sm font-medium	text-blue-700 border-[1px] border-blue-700 rounded-full overflow-hidden">
           <a target="blank" href={link.url} className="break-words cursor-pointer text-blue-700 hover:text-white hover:bg-blue-700 flex hover:no-underline h-full">
             <div className="flex items-center bg-blue-700 py-1 px-2 rounded-r-full ">
               <IoIosLink className="group-hover:scale-110 text-white" />
