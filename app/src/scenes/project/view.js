@@ -73,7 +73,6 @@ export default function ProjectView() {
 }
 
 const ProjectDetails = ({ project }) => {
-  console.log(project);
   return (
     <div>
       <div className="flex flex-wrap p-3">
@@ -277,7 +276,6 @@ const Field = ({ value = "-", ...rest }) => {
 };
 
 const Links = ({ project }) => {
-  console.log(project.links);
   return (
     <div className="flex flex-wrap gap-3">
       {project.website && (

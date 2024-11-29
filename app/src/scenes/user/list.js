@@ -137,7 +137,6 @@ const Create = () => {
                   setOpen(false);
                   history.push(`/user/${res.data._id}`);
                 } catch (e) {
-                  console.log(e);
                   toast.error("Some Error!", e.code);
                 }
                 setSubmitting(false);

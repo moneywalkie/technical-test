@@ -114,7 +114,6 @@ const Create = ({ onChangeSearch }) => {
       toast.success("Created!");
       setOpen(false);
     } catch (e) {
-      console.log(e);
       toast.error("Some Error!", e.code);
     }
     setSubmitting(false);

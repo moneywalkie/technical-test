@@ -30,8 +30,6 @@ const Activity = () => {
 
   if (user === null) return <Loader />;
 
-  console.log("project", project);
-
   return (
     // Container
     <div className="w-screen md:w-full">
@@ -182,6 +180,7 @@ const Activities = ({ date, user, project }) => {
 
                   {activities.map((activity, i) => {
                     const hasTotalActivity = activity.total && getTotal() > 0;
+
                     return (
                       <React.Fragment key={activity.projectId}>
                         <tr className="border-t border-b border-r border-[#E5EAEF]" key={`1-${activity._id}`} onClick={() => setOpen(i)}>

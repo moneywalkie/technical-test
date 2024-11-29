@@ -14,7 +14,6 @@ export default ({ value, active = true, onChange }) => {
       setProjects(res.data);
     } catch (error) {
       /// Send error to error reporting service
-      console.log(error);
     }
   };
 

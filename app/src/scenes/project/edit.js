@@ -70,7 +70,6 @@ export default function EditProject() {
                 toast.success(`${project.name} updated!`);
                 history.push(`/project/${project._id}`);
               } catch (e) {
-                console.log(e);
                 toast.error("Some Error!");
               }
             }}>

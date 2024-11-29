@@ -28,7 +28,6 @@ const SigninView = () => {
             if (token) api.setToken(token);
             if (user) dispatch(setUser(user));
           } catch (e) {
-            console.log("e", e);
             toast.error("Wrong login", e.code);
           }
           actions.setSubmitting(false);

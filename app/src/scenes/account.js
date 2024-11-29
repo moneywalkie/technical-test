@@ -29,7 +29,6 @@ const AccountView = () => {
       toast.success("Updated!");
       dispatch(setUser(responseData.user));
     } catch (e) {
-      console.log(e);
       toast.error("Some Error!");
     }
     setIsLoading(false);

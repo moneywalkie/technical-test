@@ -55,7 +55,6 @@ const Detail = ({ user }) => {
           await api.put(`/user/${user._id}`, values);
           toast.success("Updated!");
         } catch (e) {
-          console.log(e);
           toast.error("Some Error!");
         }
       }}>
