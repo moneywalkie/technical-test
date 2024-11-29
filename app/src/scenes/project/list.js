@@ -40,7 +40,7 @@ const ProjectList = () => {
 
   return (
     <div className="w-full p-2 md:!px-8">
-      <Create onChangeSearch={handleSearch} />
+      <Create onChangeSearch={handleSearch} getProjects={getProjects} />
 
       <div className="py-3">
         {activeProjects?.map((hit) => {
@@ -102,7 +102,7 @@ const Budget = ({ project }) => {
   return <ProgressBar percentage={width} max={budget_max_monthly} value={total} />;
 };
 
-const Create = ({ onChangeSearch }) => {
+const Create = ({ onChangeSearch, getProjects }) => {
   const [open, setOpen] = useState(false);
 
   const onCreateProject = async (values, { setSubmitting }) => {
@@ -112,6 +112,8 @@ const Create = ({ onChangeSearch }) => {
 
       if (!res.ok) throw res;
       toast.success("Created!");
+
+      await getProjects();
       setOpen(false);
     } catch (e) {
       toast.error("Some Error!", e.code);
