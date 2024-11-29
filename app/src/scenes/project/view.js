@@ -60,6 +60,7 @@ export default function ProjectView() {
 }
 
 const ProjectDetails = ({ project }) => {
+  console.log(project);
   return (
     <div>
       <div className="flex flex-wrap p-3">

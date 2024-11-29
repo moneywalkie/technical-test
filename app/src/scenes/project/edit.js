@@ -1,4 +1,5 @@
 import { Formik } from "formik";
+import { v4 as uuidv4 } from "uuid";
 import React, { useEffect, useState } from "react";
 import { MdDeleteForever } from "react-icons/md";
 import { useHistory, useParams } from "react-router-dom";
@@ -12,26 +13,42 @@ export default function EditProject() {
   const [project, setProject] = useState(null);
   const [bufferOtherLink, setBufferOtherLink] = useState("");
   const [bufferOtherLinkLabel, setBufferOtherLinkLabel] = useState("");
-  const { id } = useParams();
-
-  useEffect(() => {
-    (async () => {
-      const { data: u } = await api.get(`/project/${id}`);
-      setProject(u);
-    })();
-  }, []);
 
   const history = useHistory();
 
-  async function deleteData() {
+  const { id } = useParams();
+
+  const getProject = async () => {
+    try {
+      const { data } = await api.get(`/project/${id}`);
+      setProject(data);
+    } catch (error) {
+      // Send error to monitoring service
+      console.error(error);
+    }
+  };
+
+  React.useEffect(() => {
+    getProject();
+  }, []);
+
+  const deleteData = async () => {
     const confirm = window.confirm("Are you sure ?");
     if (!confirm) return;
-    await api.remove(`/project/${id}`);
-    toast.success("successfully removed!");
-    history.push("/projects");
-  }
+
+    try {
+      await api.remove(`/project/${id}`);
+      toast.success("successfully removed!");
+      history.push("/projects");
+    } catch (error) {
+      // Send error to monitoring service
+      console.error(error);
+      toast.error("An error occurred!");
+    }
+  };
 
   if (!project) return <Loader />;
+
   return (
     <div>
       <div className="appContainer pt-24">
@@ -44,6 +61,7 @@ export default function EditProject() {
               View project
             </button>
           </div>
+
           <Formik
             initialValues={project}
             onSubmit={async (values) => {
@@ -108,6 +126,7 @@ export default function EditProject() {
 
                   <div className="w-full mt-3">
                     <div className="text-[14px] text-[#212325] font-medium">Description</div>
+
                     <textarea
                       className="w-full border border-[#ced4da] rounded-[10px] text-[14px] font-normal p-2 mt-2  focus:outline-none focus:ring focus:ring-[#80bdff]"
                       type="textarea"
@@ -139,7 +158,7 @@ export default function EditProject() {
                     <div className="text-[14px] text-[#212325] font-medium	">Autres</div>
                     {(values.links || []).map((link) => {
                       return (
-                        <div className="flex flex-1 flex-row mt-2 items-center gap-1">
+                        <div key={uuidv4()} className="flex flex-1 flex-row mt-2 items-center gap-1">
                           <div className="flex gap-1 flex-1 items-center">
                             <input
                               className="projectsInput mt-0 text-[14px] font-normal text-[#212325] rounded-[10px]"
