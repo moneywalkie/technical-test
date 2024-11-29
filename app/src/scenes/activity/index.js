@@ -30,6 +30,8 @@ const Activity = () => {
 
   if (user === null) return <Loader />;
 
+  console.log("project", project);
+
   return (
     // Container
     <div className="w-screen md:w-full">
@@ -51,17 +53,20 @@ const Activities = ({ date, user, project }) => {
   const [activities, setActivities] = useState([]);
   const [open, setOpen] = useState(null);
 
+  const getActivities = async () => {
+    const { data } = await api.get(`/activity?date=${date.getTime()}&user=${user.name}&project=${project}`);
+    const projects = await api.get(`/project/list`);
+
+    setActivities(
+      data.map((activity) => {
+        return { ...activity, projectName: (activity.projectName = projects.data.find((project) => project._id === activity.projectId)?.name) };
+      }),
+    );
+    setOpen(null);
+  };
+
   useEffect(() => {
-    (async () => {
-      const { data } = await api.get(`/activity?date=${date.getTime()}&user=${user.name}&project=${project}`);
-      const projects = await api.get(`/project/list`);
-      setActivities(
-        data.map((activity) => {
-          return { ...activity, projectName: (activity.projectName = projects.data.find((project) => project._id === activity.projectId)?.name) };
-        }),
-      );
-      setOpen(null);
-    })();
+    getActivities();
   }, [date]);
 
   const days = getDaysInMonth(date.getMonth(), date.getFullYear());

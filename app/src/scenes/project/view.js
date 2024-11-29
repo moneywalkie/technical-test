@@ -115,18 +115,20 @@ const ProjectDetails = ({ project }) => {
 const Budget = ({ project }) => {
   const [activities, setActivities] = useState([10, 29, 18, 12]);
 
+  const getActivities = async () => {
+    let d = new Date();
+    let dateQuery = "";
+    if (project.paymentCycle === "ONE_TIME") {
+      d = new Date(project.created_at);
+      dateQuery = "gte:";
+    }
+    const date = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1));
+    const { data } = await api.get(`/activity?projectId=${encodeURIComponent(project._id)}&date=${dateQuery}${date.getTime()}`);
+    setActivities(data);
+  };
+
   useEffect(() => {
-    (async () => {
-      let d = new Date();
-      let dateQuery = "";
-      if (project.paymentCycle === "ONE_TIME") {
-        d = new Date(project.created_at);
-        dateQuery = "gte:";
-      }
-      const date = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1));
-      const { data } = await api.get(`/activity?projectId=${encodeURIComponent(project._id)}&date=${dateQuery}${date.getTime()}`);
-      setActivities(data);
-    })();
+    getActivities();
   }, []);
 
   const total = activities.reduce((acc, cur) => acc + cur.value, 0);

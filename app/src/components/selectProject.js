@@ -5,14 +5,21 @@ import api from "../services/api";
 // eslint-disable-next-line react/display-name
 export default ({ value, active = true, onChange }) => {
   const [projects, setProjects] = useState([]);
-  
-  useEffect(() => {
-    (async () => {
-      let str = ``;
-      if (active) str = `?status=active`;
+
+  const getProjects = async () => {
+    let str = ``;
+    if (active) str = `?status=active`;
+    try {
       const res = await api.get("/project" + str);
       setProjects(res.data);
-    })();
+    } catch (error) {
+      /// Send error to error reporting service
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getProjects();
   }, []);
 
   return (
@@ -28,6 +35,7 @@ export default ({ value, active = true, onChange }) => {
         }}>
         <option disabled>Project</option>
         <option value={""}>All Project</option>
+
         {projects
           .sort(function (a, b) {
             if (a.name?.toLowerCase() < b.name?.toLowerCase()) return -1;

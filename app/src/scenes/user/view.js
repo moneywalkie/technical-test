@@ -10,12 +10,20 @@ import api from "../../services/api";
 const UserView = () => {
   const [user, setUser] = useState(null);
   const { id } = useParams();
+
   useEffect(() => {
-    (async () => {
+    getUser();
+  }, []);
+
+  const getUser = async () => {
+    try {
       const response = await api.get(`/user/${id}`);
       setUser(response.data);
-    })();
-  }, []);
+    } catch (error) {
+      /// Send error to reporting service
+      console.error(error);
+    }
+  };
 
   if (!user) return <Loader />;
 

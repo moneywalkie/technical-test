@@ -13,17 +13,29 @@ const NewList = () => {
   const [filter, setFilter] = useState({ status: "active", availability: "", search: "" });
 
   useEffect(() => {
-    (async () => {
-      const { data } = await api.get("/user");
-      setUsers(data);
-    })();
+    getUsers();
     getProjects();
   }, []);
 
-  async function getProjects() {
-    const res = await api.get("/project");
-    setProjects(res.data);
-  }
+  const getProjects = async () => {
+    try {
+      const res = await api.get("/project");
+      setProjects(res.data);
+    } catch (error) {
+      /// Send error to error reporting service
+      console.error("Error fetching projects:", error);
+    }
+  };
+
+  const getUsers = async () => {
+    try {
+      const res = await api.get("/user");
+      setUsers(res.data);
+    } catch (error) {
+      /// Send error to error reporting service
+      console.error("Error fetching users:", error);
+    }
+  };
 
   useEffect(() => {
     if (!users) return;
