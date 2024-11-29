@@ -7,7 +7,7 @@ import Loader from "../../components/loader";
 import LoadingButton from "../../components/loadingButton";
 import api from "../../services/api";
 
-export default () => {
+const UserView = () => {
   const [user, setUser] = useState(null);
   const { id } = useParams();
   useEffect(() => {
@@ -139,3 +139,5 @@ const Detail = ({ user }) => {
     </Formik>
   );
 };
+
+export default UserView;
