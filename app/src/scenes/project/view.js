@@ -23,6 +23,16 @@ export default function ProjectView() {
     setProject(u);
   };
 
+  const deleteProject = async (projectID) => {
+    try {
+      await api.remove(`/project/${projectID}`);
+      history.push("/project");
+    } catch (error) {
+      // Send error to monitoring service
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getProject();
   }, []);
@@ -48,6 +58,10 @@ export default function ProjectView() {
                 onClick={() => history.push(`/project/edit/${project?._id}`)}
                 className="border !border-[#0560FD] text-[#0560FD] py-[7px] px-[20px] bg-[#FFFFFF] rounded-[16px]">
                 Edit
+              </button>
+
+              <button onClick={() => deleteProject(id)} className="border !border-red-500 text-red-500 py-[7px] px-[20px] bg-[#FFFFFF] rounded-[16px]">
+                Delete
               </button>
             </div>
           </div>
