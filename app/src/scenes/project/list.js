@@ -8,20 +8,25 @@ import LoadingButton from "../../components/loadingButton";
 import ProgressBar from "../../components/ProgressBar";
 
 import api from "../../services/api";
+
 const ProjectList = () => {
   const [projects, setProjects] = useState(null);
   const [activeProjects, setActiveProjects] = useState(null);
 
   const history = useHistory();
 
-  useEffect(() => {
-    (async () => {
-      const { data: u } = await api.get("/project");
-      setProjects(u);
-    })();
+  const getProjects = async () => {
+    const { data } = await api.get("/project");
+    setProjects(data);
+  };
+
+  React.useEffect(() => {
+    getProjects();
+
+    return () => {};
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const p = (projects || []).filter((p) => p.status === "active");
     setActiveProjects(p);
   }, [projects]);
@@ -36,8 +41,9 @@ const ProjectList = () => {
   return (
     <div className="w-full p-2 md:!px-8">
       <Create onChangeSearch={handleSearch} />
+
       <div className="py-3">
-        {activeProjects.map((hit) => {
+        {activeProjects?.map((hit) => {
           return (
             <div
               key={hit._id}
@@ -95,6 +101,21 @@ const Budget = ({ project }) => {
 const Create = ({ onChangeSearch }) => {
   const [open, setOpen] = useState(false);
 
+  const onCreateProject = async (values, { setSubmitting }) => {
+    try {
+      values.status = "active";
+      const res = await api.post("/project", values);
+
+      if (!res.ok) throw res;
+      toast.success("Created!");
+      setOpen(false);
+    } catch (e) {
+      console.log(e);
+      toast.error("Some Error!", e.code);
+    }
+    setSubmitting(false);
+  };
+
   return (
     <div className="mb-[10px] ">
       <div className="flex justify-between flex-wrap">
@@ -115,6 +136,7 @@ const Create = ({ onChangeSearch }) => {
             onChange={(e) => onChangeSearch(e.target.value)}
           />
         </div>
+
         {/* Create New Button */}
         <button
           className="bg-[#0560FD] text-[#fff] py-[12px] px-[20px] rounded-[10px] text-[16px] font-medium"
@@ -137,21 +159,7 @@ const Create = ({ onChangeSearch }) => {
               e.stopPropagation();
             }}>
             {/* Modal Body */}
-            <Formik
-              initialValues={{}}
-              onSubmit={async (values, { setSubmitting }) => {
-                try {
-                  values.status = "active";
-                  const res = await api.post("/project", values);
-                  if (!res.ok) throw res;
-                  toast.success("Created!");
-                  setOpen(false);
-                } catch (e) {
-                  console.log(e);
-                  toast.error("Some Error!", e.code);
-                }
-                setSubmitting(false);
-              }}>
+            <Formik initialValues={{ name: "" }} onSubmit={onCreateProject}>
               {({ values, handleChange, handleSubmit, isSubmitting }) => (
                 <React.Fragment>
                   <div className="w-full md:w-6/12 text-left">
