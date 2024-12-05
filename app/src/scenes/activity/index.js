@@ -97,7 +97,8 @@ const Activities = ({ date, user, project }) => {
     if (window.confirm("Are you sure ?")) {
       const activity = activities[i];
       await api.remove(`/activity/${activity._id}`);
-      toast.success(`Deleted ${activity.project}`);
+      toast.success(`Deleted ${activity.projectName}`);
+      setActivities(activities.filter((a) => a._id !== activity._id));
     }
   }
 
@@ -192,7 +193,7 @@ const Activities = ({ date, user, project }) => {
                           </th>
                           {e.detail.map((f, j) => {
                             return (
-                              <Field key={`${e.project} ${j}`} invoiced={e.invoiced} value={f.value || 0} onChange={(a) => onUpdateValue(i, j, parseFloat(a.target.value || 0))} />
+                              <Field key={`${f.project} ${j}`} invoiced={e.invoiced} value={f.value || 0} onChange={(a) => onUpdateValue(i, j, parseFloat(a.target.value || 0))} />
                             );
                           })}
                           <th className={`border border-[#E5EAEF] py-[6px]`}>
