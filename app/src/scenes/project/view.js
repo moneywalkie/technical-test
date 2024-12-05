@@ -8,6 +8,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { getDaysInMonth } from "./utils";
 
 import Loader from "../../components/loader";
+import Tag from "../../components/tag";
 import api from "../../services/api";
 
 import ProgressBar from "../../components/ProgressBar";
@@ -60,7 +61,6 @@ export default function ProjectView() {
 }
 
 const ProjectDetails = ({ project }) => {
-  console.log(project);
   return (
     <div>
       <div className="flex flex-wrap p-3">
@@ -71,6 +71,7 @@ const ProjectDetails = ({ project }) => {
                 <div className="flex gap-20">
                   <span className="w-fit text-[20px] text-[#0C1024] font-bold">Nom du projet : </span>
                   <span className="w-fit text-[20px] text-[#0C1024] font-bold">{project.name.toString()}</span>
+                  {project.type && <Tag type={project.type}></Tag>}
                 </div>
                 <div className="flex flex-1 flex-column items-end gap-3">
                   <Links project={project} />

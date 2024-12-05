@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { useHistory } from "react-router-dom";
 
 import Loader from "../../components/loader";
+import Tag from "../../components/tag";
 import LoadingButton from "../../components/loadingButton";
 import ProgressBar from "../../components/ProgressBar";
 
@@ -46,8 +47,9 @@ const ProjectList = () => {
               <div className="flex w-full md:w-[25%] border-r border-[#E5EAEF]">
                 <div className="flex flex-wrap gap-4 items-center">
                   {hit.logo && <img className="w-[85px] h-[85px] rounded-[8px] object-contain	" src={hit.logo} alt="ProjectImage.png" />}
-                  <div className="flex flex-col flex-wrap flex-1">
+                  <div className="flex flex-col flex-wrap flex-1 gap-1">
                     <div className="text-[18px] text-[#212325] font-semibold flex flex-wrap">{hit.name}</div>
+                    {hit.type && <Tag type={hit.type}></Tag>}
                   </div>
                 </div>
               </div>
