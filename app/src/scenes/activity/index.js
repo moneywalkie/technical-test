@@ -175,7 +175,7 @@ const Activities = ({ date, user, project }) => {
                   </tr>
                   {activities.map((e, i) => {
                     return (
-                      <React.Fragment key={e.project}>
+                      <React.Fragment key={e.projectId}>
                         <tr className="border-t border-b border-r border-[#E5EAEF]" key={`1-${e._id}`} onClick={() => setOpen(i)}>
                           <th className="w-[100px] border-t border-b border-r text-[12px] font-bold text-[#212325] text-left">
                             <div className="flex flex-1 items-center justify-between gap-1 px-2">
@@ -213,7 +213,7 @@ const Activities = ({ date, user, project }) => {
                                 <textarea
                                   value={e.comment}
                                   onChange={(e) => onUpdateComment(i, e.target.value)}
-                                  placeholder={`Please add a comment on what you deliver on ${e.project} (We need to show value created to clients)`}
+                                  placeholder={`Please add a comment on what you deliver on ${e.projectName} (We need to show value created to clients)`}
                                   rows={6}
                                   className="w-full text-sm pt-2 pl-2"
                                 />
