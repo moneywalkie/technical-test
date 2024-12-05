@@ -94,6 +94,7 @@ const Budget = ({ project }) => {
 
 const Create = ({ onChangeSearch }) => {
   const [open, setOpen] = useState(false);
+  const history = useHistory();
 
   return (
     <div className="mb-[10px] ">
@@ -146,6 +147,7 @@ const Create = ({ onChangeSearch }) => {
                   if (!res.ok) throw res;
                   toast.success("Created!");
                   setOpen(false);
+                  history.push(`/project/${res.data._id}`);
                 } catch (e) {
                   console.log(e);
                   toast.error("Some Error!", e.code);
