@@ -24,7 +24,7 @@ export default function ProjectView() {
   useEffect(() => {
     (async () => {
       const { data: u } = await api.get(`/project/${id}`);
-      setProject(u);
+      setProject(u[0]);
     })();
   }, []);
 
@@ -207,7 +207,7 @@ const Activities = ({ project }) => {
                           <tr className="border-t border-b border-r border-[#E5EAEF]" key={`1-${e._id}`}>
                             <th className="w-[100px] border-t border-b border-r text-[12px] font-bold text-[#212325] text-left">
                               <div className="flex flex-1 items-center justify-between gap-1 px-2">
-                                <div className="flex flex-1 items-center justify-start gap-1">
+                                <div className="flex flex-col flex-1 items-center justify-start gap-1">
                                   <img
                                     className="relative z-30 inline object-cover w-[25px] h-[25px] border border-white rounded-full"
                                     src={e?.userAvatar}
